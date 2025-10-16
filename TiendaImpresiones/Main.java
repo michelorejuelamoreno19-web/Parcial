@@ -27,7 +27,7 @@ public class Main {
         System.out.println("\n=== CREANDO PEDIDO ===");
         Pedido pedido = null;
         try {
-            pedido = new PedidoBuilder()
+            pedido = new Pedido.Builder()
                         .asignarCliente(cliente)
                         .agregarProducto(p1, 3)
                         .agregarProducto(p2, 1)
