@@ -12,7 +12,7 @@ public class Impresion extends Producto {
 
     private ArrayList<Foto> fotos; // composición
 
-    public Impresion(int numero, double precio, int stock,
+    public Impresion(   int numero, double precio, int stock,
                      String color, String formato, int resolucion, int cantidad) {
         super(numero, "Impresion", precio, stock);
         this.color = color;
