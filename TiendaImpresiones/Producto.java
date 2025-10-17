@@ -1,6 +1,5 @@
 /**
  * Clase abstracta Producto (padre) que implementa la interfaz OperacionesProducto.
- * Tiene 4 atributos y define métodos que las subclases deben implementar.
  */
 public abstract class Producto implements OperacionesProducto {
     protected int numero;

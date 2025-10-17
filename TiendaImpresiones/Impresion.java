@@ -3,7 +3,6 @@ import java.util.ArrayList;
 /**
  * Subclase Impresion de Producto.
  * Composición: contiene una lista de Foto.
- * 4 atributos y 4 métodos (implementa la interfaz).
  */
 public class Impresion extends Producto {
     private String color;

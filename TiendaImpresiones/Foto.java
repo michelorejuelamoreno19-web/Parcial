@@ -1,6 +1,5 @@
 /**
  * Clase Foto. Está separada de Producto y puede usarse en Impresion.
- * (Tiene 4 atributos y 4 métodos).
  */
 public class Foto {
     private int numero;

@@ -3,7 +3,6 @@ import java.util.Date;
 
 /**
  * Clase Pedido: compone Cliente y lista de Producto.
- * 4 atributos y 4 métodos.
  */
 public class Pedido {
     private Cliente cliente;

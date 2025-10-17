@@ -1,6 +1,5 @@
 /**
  * Subclase Camara de Producto.
- * 4 atributos y 4 métodos (implementa los de la interfaz).
  */
 public class Camara extends Producto {
     private String marca;

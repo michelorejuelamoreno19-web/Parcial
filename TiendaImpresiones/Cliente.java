@@ -1,6 +1,4 @@
-/**
- * Clase Cliente con 4 atributos y 4 métodos.
- */
+
 public class Cliente {
     private String nombre;
     private String cedula;
