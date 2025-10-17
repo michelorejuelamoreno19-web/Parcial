@@ -24,9 +24,4 @@ class Marco extends ProductoDecorador {
     public double getPrecio() { return producto.getPrecio() + 2.0; }
 }
 
-class AcabadoPremium extends ProductoDecorador {
-    public AcabadoPremium(Producto producto) { super(producto); }
-    public String getDescripcion() { return producto.getDescripcion() + " con acabado premium"; }
-    public double getPrecio() { return producto.getPrecio() + 3.0; }
-}
 
