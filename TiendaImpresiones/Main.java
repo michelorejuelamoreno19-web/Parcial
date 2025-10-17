@@ -1,68 +1,53 @@
-import java.util.ArrayList;
-import java.util.Date;
-
+/**
+ * Demo de uso: crea cliente, fabrica productos usando Factory (Factory Method),
+ * arma pedido, añade fotos a impresión y procesa pedido.
+ */
 public class Main {
     public static void main(String[] args) {
-        // Crear productos
-        Producto p1 = new Producto(1, "Impresión 10x15", 1.50, 100);
-        Producto p2 = new Producto(2, "Marco Decorativo", 25.00, 10);
+        // Crear cliente
+        Cliente cliente = new Cliente("Ana Perez", "100200300", 200.0, "ana@mail.com");
+        System.out.println("Cliente creado: " + cliente.resumen());
 
-        // Crear clientes (nombres consistentes)
-        Cliente cliente1 = new Cliente("1002345678", "Ana Pérez", "3001234567", "Calle 123 #45-67");
-        Cliente cliente2 = new Cliente("1098765432", "Luis Gómez", "3017654321", "Carrera 10 #20-30");
+        // Mostrar tipos y crear productos con la fábrica
+        Factory.mostrarTipos();
+        Producto cam = Factory.crearProducto("camara");
+        Producto imp = Factory.crearProducto("impresion");
 
-        // Listas para mostrar "uno tras otro"
-        ArrayList<Cliente> clientes = new ArrayList<>();
-        clientes.add(cliente1);
-        clientes.add(cliente2);
-
-        ArrayList<Producto> productos = new ArrayList<>();
-        productos.add(p1);
-        productos.add(p2);
-
-        // Mostrar clientes uno tras otro (formato vertical)
-        System.out.println("=== CLIENTES ===");
-        for (Cliente c : clientes) {
-            c.mostrarResumen();
-            System.out.println();
+        // Ensamblar y verificar
+        if (cam != null) {
+            cam.ensamblar();
+            cam.verificar();
+        }
+        if (imp != null) {
+            imp.ensamblar();
+            imp.verificar();
         }
 
-        // Mostrar productos uno tras otro
-        System.out.println("=== PRODUCTOS DISPONIBLES ===");
-        for (Producto p : productos) {
-            p.mostrarResumen();
-            System.out.println();
+        // Si la impresion es la instancia concreta, agregar fotos (composición)
+        if (imp instanceof Impresion) {
+            Impresion impObj = (Impresion) imp;
+            Foto f1 = new Foto(10, "Retrato", 0.5, 10);
+            Foto f2 = new Foto(11, "Paisaje", 0.7, 5);
+            f1.ensamblar();
+            f2.ensamblar();
+            impObj.agregarFoto(f1);
+            impObj.agregarFoto(f2);
         }
 
-        // Construir pedido usando Builder: asignar cliente1 (asegúrate de usar cliente1, no cliente)
-        System.out.println("=== CREANDO PEDIDO ===");
-        Pedido pedido = null;
-        try {
-            pedido = new Pedido.Builder()
-                        .asignarCliente(cliente1)  // <-- usa cliente1 aquí
-                        .agregarProducto(p1, 3)
-                        .agregarProducto(p2, 1)
-                        .establecerFecha(new Date())
-                        .build(); // valida, calcula y reduce stock
+        // Crear pedido
+        Pedido pedido = new Pedido(cliente);
+        if (cam != null) pedido.agregarProducto(cam);
+        if (imp != null) pedido.agregarProducto(imp);
 
-            // Mostrar resumen del pedido y total
-            pedido.mostrarResumen();
-            System.out.printf("Total: $%.2f%n", pedido.getTotal());
-        } catch (Exception ex) {
-            System.out.println("Error al crear pedido: " + ex.getMessage());
+        pedido.mostrarResumen();
+
+        // Intentar procesar (pagar). Si saldo insuficiente, prueba cargar saldo.
+        pedido.procesar();
+
+        // Si pago falló, cargar saldo y volver a procesar (demostración)
+        if (cliente.getSaldo() < pedido.calcularTotal()) {
+            cliente.cargarSaldo(200.0);
+            pedido.procesar();
         }
-
-        // Guardar y actualizar el pedido (simulado)
-        if (pedido != null) {
-            System.out.println("\n=== OPERACIONES SOBRE EL PEDIDO ===");
-            pedido.guardarRegistro();
-            pedido.actualizarDatos();
-        }
-
-        // Mostrar estado de stock tras confirmación
-        System.out.println("\n=== STOCK ACTUALIZADO ===");
-        p1.mostrarResumen();
-        System.out.println();
-        p2.mostrarResumen();
     }
 }

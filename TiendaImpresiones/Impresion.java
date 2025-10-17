@@ -1,79 +1,51 @@
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Impresion
- *
- * Agrupa fotos y calcula el costo de impresión según modo, formato y copias.
- * Implementa InterfazDeImpresion.
+ * Subclase Impresion de Producto.
+ * Composición: contiene una lista de Foto.
+ * 4 atributos y 4 métodos (implementa la interfaz).
  */
-public class Impresion implements InterfazDeImpresion {
-    private String modoColor;
+public class Impresion extends Producto {
+    private String color;
     private String formato;
-    private int copias;
-    private List<Foto> fotos = new ArrayList<>();
+    private int resolucion;
+    private int cantidad; // unidades a imprimir
 
-    /**
-     * Crea un trabajo de impresión.
-     * @param modoColor "Color" o "B/N".
-     * @param formato Formato físico (ej. "10x15").
-     * @param copias Número de copias por foto.
-     */
-    public Impresion(String modoColor, String formato, int copias) {
-        this.modoColor = modoColor;
+    private ArrayList<Foto> fotos; // composición
+
+    public Impresion(int numero, double precio, int stock,
+                     String color, String formato, int resolucion, int cantidad) {
+        super(numero, "Impresion", precio, stock);
+        this.color = color;
         this.formato = formato;
-        this.copias = copias;
+        this.resolucion = resolucion;
+        this.cantidad = cantidad;
+        this.fotos = new ArrayList<>();
     }
 
-    /**
-     * Valida que exista al menos una foto y copias positivas.
-     * @return true si la impresión está configurada.
-     */
+    // Composición: agregar foto
+    public void agregarFoto(Foto f) {
+        fotos.add(f);
+        System.out.println("Foto agregada a impresion: " + f.getTipo());
+    }
+
     @Override
-    public boolean esValido() {
-        return copias > 0 && !fotos.isEmpty();
+    public void ensamblar() {
+        System.out.println("🖨️ Preparando impresora (formato: " + formato + ", color: " + color + ")");
     }
 
-    /**
-     * Muestra resumen del trabajo de impresión.
-     */
     @Override
-    public void mostrarResumen() {
-        System.out.println("Impresion" + modoColor + ", " + formato + ", copias=" + copias + ", fotos=" + fotos.size() + ".");
+    public void verificar() {
+        System.out.println("🔍 Verificando impresión a " + resolucion + " DPI. Fotos: " + fotos.size());
     }
 
-    /**
-     * Simula guardar el trabajo de impresión.
-     */
     @Override
-    public void guardarRegistro() {
-        System.out.println("[DB] Impresión guardada (simulado).");
+    public void entregar() {
+        System.out.println("📦 Entregando " + cantidad + " impresiones (" + formato + ")");
     }
 
-    /**
-     * Simula actualización del registro de impresión.
-     */
     @Override
-    public void actualizarDatos() {
-        System.out.println("[Impresion] Actualizando registro de impresión (simulado).");
-    }
-
-    /* Métodos auxiliares para manejar las fotos (no cuentan entre los 4 públicos) */
-
-    /**
-     * Agrega una foto al trabajo de impresión.
-     * @param f Foto a añadir.
-     */
-    public void agregarFoto(Foto f) { if (f != null) fotos.add(f); }
-
-    /**
-     * Calcula el costo aproximado de la impresión.
-     * @return costo total.
-     */
-    public double calcularCosto() {
-        double base = 0.30;
-        if ("Color".equalsIgnoreCase(modoColor)) base += 0.10;
-        if ("10x15".equalsIgnoreCase(formato)) base += 0.15;
-        return base * copias * Math.max(1, fotos.size());
+    public String resumen() {
+        return "Impresion " + formato + " - " + color + " DPI:" + resolucion + " $" + precio;
     }
 }

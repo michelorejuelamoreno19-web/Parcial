@@ -1,75 +1,38 @@
 /**
- * Cliente
- *
- * Representa un cliente que realiza pedidos. Implementa InterfazDeImpresion
- * por lo que obliga a implementar los cuatro métodos: validar, mostrar,
- * guardar y actualizar.
+ * Clase Cliente con 4 atributos y 4 métodos.
  */
-public class Cliente implements InterfazDeImpresion {
-    private String cedula;
+public class Cliente {
     private String nombre;
-    private String telefono;
-    private String direccion;
+    private String cedula;
+    private double saldo;
+    private String email;
 
-    /**
-     * Crea un nuevo cliente.
-     * @param cedula Identificación del cliente.
-     * @param nombre Nombre completo.
-     * @param telefono Teléfono de contacto.
-     * @param direccion Dirección física.
-     */
-    public Cliente(String cedula, String nombre, String telefono, String direccion) {
-        this.cedula = cedula;
+    public Cliente(String nombre, String cedula, double saldo, String email) {
         this.nombre = nombre;
-        this.telefono = telefono;
-        this.direccion = direccion;
+        this.cedula = cedula;
+        this.saldo = saldo;
+        this.email = email;
     }
 
-    /**
-     * Valida que el cliente tenga identificación y nombre no vacíos.
-     * @return true si es válido, false en caso contrario.
-     */
-    @Override
-    public boolean esValido() {
-        return cedula != null && !cedula.isEmpty() && nombre != null && !nombre.isEmpty();
+    public boolean pagar(double monto) {
+        if (saldo >= monto) {
+            saldo -= monto;
+            System.out.println("💳 Pago de $" + monto + " realizado. Saldo: $" + saldo);
+            return true;
+        } else {
+            System.out.println("❌ Saldo insuficiente. Saldo actual: $" + saldo);
+            return false;
+        }
     }
 
-    /**
-     * Imprime por consola un resumen del cliente.
-     */
-    @Override
-    public void mostrarResumen() {
-        System.out.println("Cliente cedula=" + cedula + 
-                           ", nombre=" + nombre + 
-                           ", telefono=" + telefono + 
-                           ", direccion=" + direccion);
+    public void cargarSaldo(double monto) {
+        saldo += monto;
+        System.out.println("Saldo cargado: $" + monto + ". Nuevo saldo: $" + saldo);
     }
 
-    /**
-     * Simula persistir el registro del cliente.
-     */
-    @Override
-    public void guardarRegistro() {
-        System.out.println("[DB] Guardando cliente " + nombre + " (simulado).");
+    public double getSaldo() { return saldo; }
+
+    public String resumen() {
+        return nombre + " (" + cedula + ") - " + email + " - saldo: $" + saldo;
     }
-
-    /**
-     * Simula una operación de actualización sobre los datos del cliente.
-     */
-    @Override
-    public void actualizarDatos() {
-        System.out.println("[Cliente] Actualizando datos de " + nombre + " (simulado).");
-    }
-
-    @Override
-    public String toString() {
-        return nombre + " (" + cedula + ")";
-    }
-
-    /* Métodos auxiliares (package-private / privados) que NO se consideran como
-       parte de los 4 métodos obligatorios de la interfaz. Se incluyen para
-       uso interno en otras clases (por ejemplo Pedido). */
-
-    String obtenerCedula() { return cedula; }
-    String obtenerNombre() { return nombre; }
 }
