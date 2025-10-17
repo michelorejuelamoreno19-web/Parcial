@@ -1,69 +1,111 @@
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 
+/**
+ * Main interactivo
+ *
+ * Permite ingresar los datos del cliente y los productos desde consola,
+ * construir el pedido con el patrón Builder y mostrar el resumen final.
+ */
 public class Main {
     public static void main(String[] args) {
-        // Crear productos
-        Producto p1 = new Producto(1, "Impresión 10x15", 1.50, 100);
-        Producto p2 = new Producto(2, "Marco Decorativo", 25.00, 10);
+        Scanner sc = new Scanner(System.in);
 
-        // Crear clientes
-        Cliente cliente1 = new Cliente("1002345678", "Ana Pérez", "3001234567", "Calle 123 #45-67");
-        Cliente cliente2 = new Cliente("1098765432", "Luis Gómez", "3017654321", "Carrera 10 #20-30");
+        System.out.println("===== SISTEMA DE PEDIDOS DE IMPRESIÓN =====\n");
 
-        // Listas para mostrar "uno tras otro"
-        ArrayList<Cliente> clientes = new ArrayList<>();
-        clientes.add(cliente1);
-        clientes.add(cliente2);
+        // === INGRESAR DATOS DEL CLIENTE ===
+        System.out.print("Ingrese cédula del cliente: ");
+        String cedula = sc.nextLine();
 
-        ArrayList<Producto> productos = new ArrayList<>();
-        productos.add(p1);
-        productos.add(p2);
+        System.out.print("Ingrese nombre del cliente: ");
+        String nombre = sc.nextLine();
 
-        // Mostrar clientes uno tras otro (formato vertical)
-        System.out.println("=== CLIENTES ===");
-        for (Cliente c : clientes) {
-            c.mostrarResumen();   // debe imprimir: Cédula:, Nombre:, Teléfono:, Dirección:
-            System.out.println(); // línea en blanco entre clientes
+        System.out.print("Ingrese teléfono del cliente: ");
+        String telefono = sc.nextLine();
+
+        System.out.print("Ingrese dirección del cliente: ");
+        String direccion = sc.nextLine();
+
+        Cliente cliente = new Cliente(cedula, nombre, telefono, direccion);
+
+        System.out.println("\nCliente registrado:");
+        cliente.mostrarResumen();
+
+        // === INGRESAR PRODUCTOS ===
+        System.out.print("\n¿Cuántos productos desea registrar? ");
+        int numProductos = Integer.parseInt(sc.nextLine());
+
+        List<Producto> productos = new ArrayList<>();
+
+        for (int i = 0; i < numProductos; i++) {
+            System.out.println("\n--- Producto #" + (i + 1) + " ---");
+            System.out.print("Nombre del producto: ");
+            String nombreProd = sc.nextLine();
+
+            System.out.print("Precio unitario: ");
+            double precio = Double.parseDouble(sc.nextLine());
+
+            System.out.print("Cantidad en stock: ");
+            int stock = Integer.parseInt(sc.nextLine());
+
+            Producto p = new Producto(i + 1, nombreProd, precio, stock);
+            productos.add(p);
         }
 
-        // Mostrar productos uno tras otro
-        System.out.println("=== PRODUCTOS DISPONIBLES ===");
+        System.out.println("\nProductos registrados:");
         for (Producto p : productos) {
-            p.mostrarResumen();   // asumo que muestra información del producto
-            System.out.println(); // separación visual
+            p.mostrarResumen();
         }
 
-        // Construir pedido usando Builder: asignar cliente, agregar productos y confirmar
-        System.out.println("=== CREANDO PEDIDO ===");
+        // === CONSTRUCCIÓN DEL PEDIDO CON BUILDER ===
         Pedido pedido = null;
         try {
-            pedido = new Pedido.Builder()
-                        .asignarCliente(cliente1)  // ejemplo: pedido para Ana Pérez
-                        .agregarProducto(p1, 3)
-                        .agregarProducto(p2, 1)
-                        .establecerFecha(new Date())
-                        .build(); // valida, calcula y reduce stock
+            Pedido.Builder builder = new Pedido.Builder()
+                    .asignarCliente(cliente)
+                    .establecerFecha(new Date());
 
-            // Mostrar resumen del pedido y total
+            System.out.println("\nSeleccione los productos para el pedido:");
+
+            for (Producto p : productos) {
+                System.out.printf("¿Cuántas unidades de '%s' desea agregar? (Stock: %d) ", p.getNombre(), stockSafe(p));
+                int cantidad = Integer.parseInt(sc.nextLine());
+                if (cantidad > 0) {
+                    builder.agregarProducto(p, cantidad);
+                }
+            }
+
+            pedido = builder.build(); // valida y reduce stock
+
+            System.out.println("\n=== PEDIDO CONFIRMADO ===");
             pedido.mostrarResumen();
             System.out.printf("Total: $%.2f%n", pedido.getTotal());
+
         } catch (Exception ex) {
             System.out.println("Error al crear pedido: " + ex.getMessage());
         }
 
-        // Guardar y actualizar el pedido (simulado)
+        // === GUARDAR Y ACTUALIZAR ===
         if (pedido != null) {
             System.out.println("\n=== OPERACIONES SOBRE EL PEDIDO ===");
             pedido.guardarRegistro();
             pedido.actualizarDatos();
         }
 
-        // Mostrar estado de stock tras confirmación (productos uno tras otro)
+        // === MOSTRAR STOCK ACTUAL ===
         System.out.println("\n=== STOCK ACTUALIZADO ===");
         for (Producto p : productos) {
             p.mostrarResumen();
-            System.out.println();
+        }
+
+        System.out.println("\nGracias por usar el sistema.");
+        sc.close();
+    }
+
+    // Método auxiliar para evitar errores de stock nulo
+    private static int stockSafe(Producto p) {
+        try {
+            return (int) p.getClass().getDeclaredField("existencias").get(p);
+        } catch (Exception e) {
+            return 0;
         }
     }
 }
