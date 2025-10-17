@@ -1,0 +1,2 @@
+¿Cuál sería una impelemtación del patrón decorador en las clases que 
+tenemos de las clases Foto, impresión, Camara, Producto, Cliente, Pedido?
