@@ -1,38 +1,45 @@
+import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * Main
- *
- * Programa de ejemplo que muestra la creación de productos, cliente y
- * la construcción de un pedido mediante el patrón Builder.
- */
 public class Main {
     public static void main(String[] args) {
         // Crear productos
         Producto p1 = new Producto(1, "Impresión 10x15", 1.50, 100);
         Producto p2 = new Producto(2, "Marco Decorativo", 25.00, 10);
 
-        // Crear cliente
-        Cliente cliente = new Cliente  (
-        "1002345678", 
-        "Ana Pérez", 
-        "3001234567", 
-        "Calle 123 #45-67");
+        // Crear clientes (nombres consistentes)
+        Cliente cliente1 = new Cliente("1002345678", "Ana Pérez", "3001234567", "Calle 123 #45-67");
+        Cliente cliente2 = new Cliente("1098765432", "Luis Gómez", "3017654321", "Carrera 10 #20-30");
 
-        // Mostrar datos iniciales
-        System.out.println("=== CLIENTE ===");
-        cliente.mostrarResumen();
+        // Listas para mostrar "uno tras otro"
+        ArrayList<Cliente> clientes = new ArrayList<>();
+        clientes.add(cliente1);
+        clientes.add(cliente2);
 
-        System.out.println("\n=== PRODUCTOS DISPONIBLES ===");
-        p1.mostrarResumen();
-        p2.mostrarResumen();
+        ArrayList<Producto> productos = new ArrayList<>();
+        productos.add(p1);
+        productos.add(p2);
 
-        // Construir pedido usando Builder: asignar cliente, agregar productos y confirmar
-        System.out.println("\n=== CREANDO PEDIDO ===");
+        // Mostrar clientes uno tras otro (formato vertical)
+        System.out.println("=== CLIENTES ===");
+        for (Cliente c : clientes) {
+            c.mostrarResumen();
+            System.out.println();
+        }
+
+        // Mostrar productos uno tras otro
+        System.out.println("=== PRODUCTOS DISPONIBLES ===");
+        for (Producto p : productos) {
+            p.mostrarResumen();
+            System.out.println();
+        }
+
+        // Construir pedido usando Builder: asignar cliente1 (asegúrate de usar cliente1, no cliente)
+        System.out.println("=== CREANDO PEDIDO ===");
         Pedido pedido = null;
         try {
             pedido = new Pedido.Builder()
-                        .asignarCliente(cliente)
+                        .asignarCliente(cliente1)  // <-- usa cliente1 aquí
                         .agregarProducto(p1, 3)
                         .agregarProducto(p2, 1)
                         .establecerFecha(new Date())
@@ -55,6 +62,7 @@ public class Main {
         // Mostrar estado de stock tras confirmación
         System.out.println("\n=== STOCK ACTUALIZADO ===");
         p1.mostrarResumen();
+        System.out.println();
         p2.mostrarResumen();
     }
 }
