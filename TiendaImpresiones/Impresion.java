@@ -39,7 +39,7 @@ public class Impresion implements InterfazDeImpresion {
      */
     @Override
     public void mostrarResumen() {
-        System.out.println("Impresion{" + modoColor + ", " + formato + ", copias=" + copias + ", fotos=" + fotos.size() + "}");
+        System.out.println("Impresion" + modoColor + ", " + formato + ", copias=" + copias + ", fotos=" + fotos.size() + ".");
     }
 
     /**

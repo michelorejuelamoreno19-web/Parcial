@@ -39,7 +39,10 @@ public class Cliente implements InterfazDeImpresion {
      */
     @Override
     public void mostrarResumen() {
-        System.out.println("Cliente{cedula=" + cedula + ", nombre=" + nombre + ", telefono=" + telefono + ", direccion=" + direccion + "}");
+        System.out.println("Cliente cedula=" + cedula + 
+                           ", nombre=" + nombre + 
+                           ", telefono=" + telefono + 
+                           ", direccion=" + direccion);
     }
 
     /**

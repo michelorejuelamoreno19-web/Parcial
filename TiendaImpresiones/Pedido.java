@@ -43,7 +43,7 @@ public class Pedido implements InterfazDeImpresion {
      */
     @Override
     public void mostrarResumen() {
-        System.out.println("Pedido{id=" + id + ", fecha=" + fecha + ", total=$" + String.format("%.2f", total) + ", estado=" + estado + "}");
+        System.out.println("Pedido: id=" + id + ", fecha=" + fecha + ", total=$" + String.format("%.2f", total) + ", estado=" + estado + ".");
         if (cliente != null) System.out.println("  Cliente: " + cliente);
         for (Map.Entry<Producto, Integer> e : carrito.entrySet()) {
             System.out.println("  - " + e.getKey().getNombre() + " x" + e.getValue() + " -> $" + String.format("%.2f", e.getKey().getPrecio() * e.getValue()));
