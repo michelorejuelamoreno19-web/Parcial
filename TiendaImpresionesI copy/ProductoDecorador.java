@@ -18,10 +18,5 @@ public abstract class ProductoDecorador implements Producto {
     }
 }
 
-class Marco extends ProductoDecorador {
-    public Marco(Producto producto) { super(producto); }
-    public String getDescripcion() { return producto.getDescripcion() + " con marco"; }
-    public double getPrecio() { return producto.getPrecio() + 2.0; }
-}
 
 
