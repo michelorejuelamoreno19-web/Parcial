@@ -4,7 +4,6 @@
  * además de métodos auxiliares: mostrarTipos, crearCamaraDefecto, crearImpresionDefecto.
  */
 public class Factory {
-
     /**
      * Método fábrica: devuelve Producto según tipo.
      * Tipos reconocidos: "camara", "impresion".
