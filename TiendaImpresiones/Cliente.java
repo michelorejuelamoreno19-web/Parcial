@@ -11,13 +11,6 @@ public class Cliente implements InterfazDeImpresion {
     private String telefono;
     private String direccion;
 
-    /**
-     * Crea un nuevo cliente.
-     * @param cedula Identificación del cliente.
-     * @param nombre Nombre completo.
-     * @param telefono Teléfono de contacto.
-     * @param direccion Dirección física.
-     */
     public Cliente(String cedula, String nombre, String telefono, String direccion) {
         this.cedula = cedula;
         this.nombre = nombre;
@@ -25,6 +18,14 @@ public class Cliente implements InterfazDeImpresion {
         this.direccion = direccion;
     }
 
+    @Override
+    public void mostrarResumen() {
+        System.out.println("Cédula: " + cedula);
+        System.out.println("Nombre: " + nombre);
+        System.out.println("Teléfono: " + telefono);
+        System.out.println("Dirección: " + direccion);
+        System.out.println("-----------------------------"); // separador visual
+    }
     /**
      * Valida que el cliente tenga identificación y nombre no vacíos.
      * @return true si es válido, false en caso contrario.
@@ -32,14 +33,6 @@ public class Cliente implements InterfazDeImpresion {
     @Override
     public boolean esValido() {
         return cedula != null && !cedula.isEmpty() && nombre != null && !nombre.isEmpty();
-    }
-
-    /**
-     * Imprime por consola un resumen del cliente.
-     */
-    @Override
-    public void mostrarResumen() {
-        System.out.println("Cliente{cedula=" + cedula + ", nombre=" + nombre + ", telefono=" + telefono + ", direccion=" + direccion + "}");
     }
 
     /**
