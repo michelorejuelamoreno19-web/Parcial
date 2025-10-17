@@ -1,38 +1,19 @@
-/**
- * Subclase Camara de Producto.
- */
-public class Camara extends Producto {
-    private String marca;
+// Camara.java
+// Una cámara también puede venderse como producto (por ejemplo: cámaras en tienda)
+public class Camara extends ProductoBase {
     private String modelo;
-    private double megapixeles;
-    private String serial;
+    private String tipo; // ejemplo "digital", "reflex"
 
-    public Camara(int numero, double precio, int stock,
-                  String marca, String modelo, double megapixeles, String serial) {
-        super(numero, "Camara", precio, stock);
-        this.marca = marca;
+    public Camara(int id, String nombre, double precioBase, String modelo, String tipo) {
+        super(id, nombre, precioBase);
         this.modelo = modelo;
-        this.megapixeles = megapixeles;
-        this.serial = serial;
+        this.tipo = tipo;
     }
 
     @Override
-    public void ensamblar() {
-        System.out.println("🔧 Ensamblando cámara " + marca + " " + modelo);
+    public String getDescripcion() {
+        return super.getDescripcion() + " [" + tipo + " - " + modelo + "]";
     }
 
-    @Override
-    public void verificar() {
-        System.out.println("✅ Verificando cámara " + marca + " (" + megapixeles + " MP)");
-    }
-
-    @Override
-    public void entregar() {
-        System.out.println("📦 Entregando cámara S/N:" + serial);
-    }
-
-    @Override
-    public String resumen() {
-        return "Camara " + marca + " " + modelo + " - " + megapixeles + "MP $" + precio;
-    }
+    // precio base ya definido en precioBase
 }

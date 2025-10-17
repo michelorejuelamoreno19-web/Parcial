@@ -1,36 +1,32 @@
+// Cliente.java
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cliente {
+    private int id;
     private String nombre;
-    private String cedula;
-    private double saldo;
-    private String email;
+    private String telefono;
+    private List<Pedido> pedidos;
 
-    public Cliente(String nombre, String cedula, double saldo, String email) {
+    public Cliente(int id, String nombre, String telefono) {
+        this.id = id;
         this.nombre = nombre;
-        this.cedula = cedula;
-        this.saldo = saldo;
-        this.email = email;
+        this.telefono = telefono;
+        this.pedidos = new ArrayList<>();
     }
 
-    public boolean pagar(double monto) {
-        if (saldo >= monto) {
-            saldo -= monto;
-            System.out.println("💳 Pago de $" + monto + " realizado. Saldo: $" + saldo);
-            return true;
-        } else {
-            System.out.println("❌ Saldo insuficiente. Saldo actual: $" + saldo);
-            return false;
+    public void agregarPedido(Pedido p) {
+        pedidos.add(p);
+    }
+
+    public String getNombre() { return nombre; }
+    public int getId() { return id; }
+
+    public void mostrarPedidos() {
+        System.out.println("Pedidos de " + nombre + ":");
+        for (Pedido p : pedidos) {
+            p.mostrarPedido();
+            System.out.println("-----");
         }
-    }
-
-    public void cargarSaldo(double monto) {
-        saldo += monto;
-        System.out.println("Saldo cargado: $" + monto + ". Nuevo saldo: $" + saldo);
-    }
-
-    public double getSaldo() { return saldo; }
-
-    public String resumen() {
-        return nombre + " (" + cedula + ") - " + email + " - saldo: $" + saldo;
     }
 }

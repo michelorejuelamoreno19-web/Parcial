@@ -1,45 +1,33 @@
+// Pedido.java
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
-/**
- * Clase Pedido: compone Cliente y lista de Producto.
- */
 public class Pedido {
-    private Cliente cliente;
-    private ArrayList<Producto> productos;
-    private String fecha;
-    private double total;
+    private int idPedido;
+    private Cliente cliente;    // opcional (puede ser null)
+    private List<Producto> items;
 
-    public Pedido(Cliente cliente) {
+    public Pedido(int idPedido, Cliente cliente) {
+        this.idPedido = idPedido;
         this.cliente = cliente;
-        this.productos = new ArrayList<>();
-        this.fecha = new Date().toString();
-        this.total = 0.0;
+        this.items = new ArrayList<>();
     }
 
     public void agregarProducto(Producto p) {
-        productos.add(p);
-        System.out.println("Producto agregado: " + p.resumen());
+        items.add(p);
     }
 
     public double calcularTotal() {
-        total = 0.0;
-        for (Producto p : productos) total += p.getPrecio();
+        double total = 0;
+        for (Producto p : items) total += p.getPrecio();
         return total;
     }
 
-    public void procesar() {
-        double t = calcularTotal();
-        System.out.println("Procesando pedido. Total: $" + t);
-        if (cliente.pagar(t)) {
-            for (Producto p : productos) p.entregar();
-            System.out.println("✅ Pedido procesado. Fecha: " + fecha);
-        } else {
-            System.out.println("🚫 Pedido cancelado por falta de pago.");
+    public void mostrarPedido() {
+        System.out.println("Pedido #" + idPedido + (cliente != null ? " - Cliente: " + cliente.getNombre() : ""));
+        for (Producto p : items) {
+            System.out.printf("- %s -> $%.2f%n", p.getDescripcion(), p.getPrecio());
         }
-    }
-
-    public void mostrarResumen() {
-        System.out.println("Pedido de: " + cliente.resumen() + " | Fecha: " + fecha + " | Total estimado: $" + calcularTotal());
+        System.out.printf("Total: $%.2f%n", calcularTotal());
     }
 }
